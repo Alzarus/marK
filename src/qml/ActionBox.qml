@@ -29,6 +29,9 @@ GroupBox
 
         GroupBox {
             id: shapes
+
+            property string selectedShape: "polygon"
+
             title: "Shapes"
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
@@ -38,23 +41,35 @@ GroupBox
                 anchors.fill: parent
 
                 ToolButton {
+                    property string name: "polygon"
                     Layout.alignment: Qt.AlignHCenter
                     icon.source: "qrc:res/polygon_icon.png"
+                    highlighted: shapes.selectedShape === name
+                    onClicked: shapes.selectedShape = name
                 }
 
                 ToolButton {
+                    property string name: "circle"
                     Layout.alignment: Qt.AlignHCenter
                     icon.source: "qrc:res/circle_icon.png"
+                    highlighted: shapes.selectedShape === name
+                    onClicked: shapes.selectedShape = name
                 }
 
                 ToolButton {
+                    property string name: "rect"
                     Layout.alignment: Qt.AlignHCenter
                     icon.source: "qrc:res/rect_icon.png"
+                    highlighted: shapes.selectedShape === name
+                    onClicked: shapes.selectedShape = name
                 }
 
                 ToolButton {
+                    property string name: "triangle"
                     Layout.alignment: Qt.AlignHCenter
                     icon.source: "qrc:res/triangle_icon.png"
+                    highlighted: shapes.selectedShape === name
+                    onClicked: shapes.selectedShape = name
                 }
             }
         }
@@ -74,11 +89,12 @@ GroupBox
                     editable: true
 
                     onAccepted: {
-                        model.set(currentIndex, {"text": editText})
-                        classcombobox.reload()
+                        if (currentIndex !== -1)
+                            model.set(currentIndex, {"text": editText})
                     }
 
                     model: ListModel {
+                        id: classcomboboxmodel
                         property var current: 0
                     }
 
@@ -110,7 +126,7 @@ GroupBox
                                 height: parent.height
                             }
                             Text {
-                                text: modelData
+                                text: classcomboboxmodel.get(index)["text"]
                                 x: contentcolor.width + 10
                                 width: classcombobox.width * 0.5
                                 height: parent.height
